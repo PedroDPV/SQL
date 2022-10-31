@@ -1,0 +1,37 @@
+config {
+  type: "incremental",
+  description: "The sign-up dates of the users",
+  columns:{
+    user_id: "ID of the user",
+    sign_up_date: "The date when the user signed up"
+  },
+  bigquery:{
+    partitionBy: "sign_up_date",
+    labels: { 
+      "stage": "beta" 
+      }
+  },
+  assertions: {
+    uniqueKey: ["user_id"]
+  }, 
+  tags: ["daily"]
+}
+
+
+SELECT
+  CAST(user_id AS STRING) AS user_id,
+  DATE(registration_date) AS sign_up_date
+FROM
+  `project_id.dataset_id.users`
+WHERE
+  TRUE
+  AND CAST(user_id AS STRING) > (SELECT MAX(user_id) FROM `project_id.dataset_id.user_sign_up_date`)
+
+SELECT
+  CAST(user_id AS STRING) AS user_id,
+  DATE(registration_date) AS sign_up_date
+FROM
+  `project_id.dataset_id.users`
+WHERE
+  TRUE
+  AND CAST(user_id AS STRING) > (SELECT MAX(user_id) FROM `project_id.dataset_id.user_sign_up_date`)
