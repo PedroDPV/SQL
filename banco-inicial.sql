@@ -24,4 +24,4 @@ CREATE TABLE aluno_curso (
 	PRIMARY KEY (aluno_id, curso_id)
 );
 
-DROP TABLE aluno_curso;
+
